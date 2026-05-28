@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ DECK_TITLE }}</title>
+
+  <!-- Reveal.js core (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+
+  <!-- Space Grotesk approximates Aeonik Medium's geometric character; JetBrains Mono for monospace meta -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- Fueled brand tokens ---------- */
+    :root {
+      --perfect-black: #000000;
+      --perfect-white: #F5F5F1;
+      --nebula:        #6652FF;
+      --tech-grey:     #EAEAEA;
+      --cryo:          #00A6FF;
+      --solar:         #FF52B7;
+      --nova:          #FBBC09;
+      --muted:         rgba(245, 245, 241, 0.55);
+      --rule:          rgba(245, 245, 241, 0.15);
+
+      --font-display: 'Space Grotesk', 'Aeonik Medium', 'Inter', Arial, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    }
+
+    html, body, .reveal-viewport { background: var(--perfect-black); }
+
+    .reveal {
+      font-family: var(--font-display);
+      font-weight: 500;
+      color: var(--perfect-white);
+      letter-spacing: -0.005em;
+    }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section { padding: 0 !important; }
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      text-transform: none;
+      color: var(--perfect-white);
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+    }
+    .reveal h1, .reveal h2, .reveal h3 { margin: 0; }
+    .reveal .display { margin-bottom: 28px; }
+    .reveal p { line-height: 1.5; margin: 0; }
+    .reveal strong { font-weight: 700; color: var(--perfect-white); }
+    .reveal .controls { color: rgba(245, 245, 241, 0.4); }
+    .reveal .progress { color: var(--nebula); }
+
+    /* ---------- Fixed slide canvas: 1280 x 800 ---------- */
+    .slide, .cover {
+      position: relative;
+      width: 1280px;
+      height: 800px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide { padding: 64px 80px; }
+    .cover { padding: 80px; justify-content: center; }
+
+    /* ---------- Slide head / foot ---------- */
+    .slide-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .slide-head .bolt {
+      width: 16px; height: 22px;
+      color: var(--nebula);
+      flex-shrink: 0;
+    }
+    .meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .meta .num   { color: var(--nebula); margin-right: 12px; }
+    .meta .label { color: var(--perfect-white); }
+
+    .slide-foot {
+      position: absolute;
+      left: 80px; right: 80px;
+      bottom: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .slide-foot .wordmark {
+      color: var(--perfect-white);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      font-family: var(--font-display);
+      font-size: 14px;
+    }
+
+    /* ---------- Display headlines ---------- */
+    .display {
+      font-size: 88px;
+      line-height: 0.98;
+      max-width: 18ch;
+      margin-bottom: 24px;
+    }
+    .display.smaller  { font-size: 72px; max-width: 24ch; }
+    .display.smallest { font-size: 52px; max-width: none; }
+    .display .accent  { color: var(--nebula); }
+
+    .subtitle {
+      font-size: 22px;
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 0 56px 0;
+      line-height: 1.4;
+    }
+
+    /* ---------- 3 cards (slide 1) ---------- */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+    .card {
+      border: 1px solid var(--rule);
+      padding: 28px 26px;
+      background: rgba(245, 245, 241, 0.02);
+      min-height: 230px;
+    }
+    .card .tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--nebula);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .card h3 { font-size: 26px; margin-bottom: 14px; }
+    .card p  { font-size: 16px; color: var(--muted); line-height: 1.5; }
+
+    /* ---------- 2 blocks (slide 2) ---------- */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+    }
+    .block {
+      padding: 32px 30px;
+      border: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+    }
+    .block.accent { background: var(--nebula); border-color: var(--nebula); }
+    .block .index {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      color: var(--nebula);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .block.accent .index { color: var(--perfect-white); }
+    .block h3 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      line-height: 1.05;
+    }
+    .block .lede {
+      font-size: 16px;
+      color: var(--muted);
+      margin: 0 0 22px 0;
+      line-height: 1.45;
+    }
+    .block.accent .lede { color: rgba(245, 245, 241, 0.78); }
+    .block ul { list-style: none; padding: 0; margin: 0; }
+    .block ul li {
+      font-size: 16px;
+      padding: 10px 0 10px 24px;
+      position: relative;
+      line-height: 1.45;
+      border-top: 1px solid var(--rule);
+    }
+    .block ul li:first-child { border-top: none; padding-top: 0; }
+    .block ul li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--nebula);
+      font-weight: 500;
+    }
+    .block.accent ul li { border-top-color: rgba(245, 245, 241, 0.25); }
+    .block.accent ul li::before { color: var(--perfect-white); }
+
+    /* ---------- Slide 3 layout ---------- */
+    .split {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 36px;
+      width: 100%;
+    }
+    .strengths { display: flex; flex-direction: column; }
+    .row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: baseline;
+    }
+    .row:first-child { padding-top: 0; }
+    .row:last-child { border-bottom: none; }
+    .row .label { font-size: 26px; color: var(--perfect-white); }
+    .row .desc  { font-size: 15px; color: var(--muted); line-height: 1.5; }
+
+    .leverage {
+      background: var(--nebula);
+      padding: 28px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+    }
+    .leverage .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245, 245, 241, 0.75);
+    }
+    .leverage .glyph {
+      font-family: var(--font-mono);
+      font-size: 40px;
+      color: var(--perfect-white);
+      line-height: 1;
+      margin: 14px 0 10px;
+    }
+    .leverage h3 { font-size: 36px; line-height: 1; margin: 0 0 10px 0; }
+    .leverage .tag {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: rgba(245, 245, 241, 0.85);
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
+    }
+    .leverage p {
+      font-size: 14px;
+      color: rgba(245, 245, 241, 0.92);
+      line-height: 1.5;
+    }
+
+    .takeaway {
+      margin-top: 24px;
+      padding: 14px 22px;
+      border-left: 3px solid var(--nebula);
+      font-size: 17px;
+      color: var(--perfect-white);
+      max-width: 100%;
+      line-height: 1.45;
+    }
+    .takeaway strong { color: var(--nebula); font-weight: 500; }
+
+    /* ---------- Cover ---------- */
+    .cover .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.35em;
+      color: var(--nebula);
+      text-transform: uppercase;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .cover .eyebrow .bolt { width: 16px; height: 22px; color: var(--nebula); }
+    .cover h1 {
+      font-size: 132px;
+      line-height: 0.95;
+      max-width: 14ch;
+      margin: 0 0 32px 0;
+    }
+    .cover h1 .accent { color: var(--nebula); }
+    .cover .sub {
+      font-size: 22px;
+      color: var(--muted);
+      max-width: 50ch;
+      line-height: 1.4;
+    }
+    .cover .deck-meta {
+      position: absolute;
+      bottom: 60px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .cover .deck-meta .wordmark {
+      color: var(--perfect-white);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      font-family: var(--font-display);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bolt" viewBox="0 0 20 28">
+      <path d="M12 0 L0 16 L8 16 L6 28 L20 10 L11 10 Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ============ COVER (optional — delete this section if not needed) ============ -->
+    <section>
+      <div class="cover">
+        <div class="eyebrow">
+          <svg class="bolt"><use href="#bolt"/></svg>
+          {{ EYEBROW · LABEL }}
+        </div>
+        <h1>{{ DECK }} <span class="accent">{{ TITLE. }}</span></h1>
+        <p class="sub">{{ One-line subtitle or description. }}</p>
+        <div class="deck-meta">
+          <span><span class="wordmark">fueled</span> &nbsp;·&nbsp; {{ CONTEXT }}</span>
+          <span>{{ DURATION }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAYOUT A: 3 cards — for parallel items ("three pillars") ============ -->
+    <section>
+      <div class="slide">
+        <div class="slide-head">
+          <svg class="bolt"><use href="#bolt"/></svg>
+          <span class="meta"><span class="num">01 / 03</span><span class="label">{{ SECTION NAME }}</span></span>
+        </div>
+
+        <h2 class="display">{{ Headline }} <span class="accent">{{ word. }}</span></h2>
+        <p class="subtitle">{{ One-line argument or framing. }}</p>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="tag">01 · {{ TAG }}</div>
+            <h3>{{ Card title }}</h3>
+            <p>{{ Body text, ~2 sentences max. }}</p>
+          </div>
+          <div class="card">
+            <div class="tag">02 · {{ TAG }}</div>
+            <h3>{{ Card title }}</h3>
+            <p>{{ Body text, ~2 sentences max. }}</p>
+          </div>
+          <div class="card">
+            <div class="tag">03 · {{ TAG }}</div>
+            <h3>{{ Card title }}</h3>
+            <p>{{ Body text, ~2 sentences max. }}</p>
+          </div>
+        </div>
+
+        <div class="slide-foot">
+          <span class="wordmark">fueled</span>
+          <span>{{ DECK NAME · SECTION }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAYOUT B: 2 blocks, one Nebula accent — for paired contrast ============ -->
+    <section>
+      <div class="slide">
+        <div class="slide-head">
+          <svg class="bolt"><use href="#bolt"/></svg>
+          <span class="meta"><span class="num">02 / 03</span><span class="label">{{ SECTION NAME }}</span></span>
+        </div>
+
+        <h2 class="display smaller" style="margin-bottom: 40px;">{{ Two-part headline }} <span class="accent">{{ payoff. }}</span></h2>
+
+        <div class="grid-2">
+          <div class="block">
+            <div class="index">01 · {{ LABEL }}</div>
+            <h3>{{ Block title. }}</h3>
+            <p class="lede">{{ One-line restatement. }}</p>
+            <ul>
+              <li>{{ Supporting point one }}</li>
+              <li>{{ Supporting point two }}</li>
+              <li>{{ Supporting point three }}</li>
+              <li>{{ Supporting point four }}</li>
+            </ul>
+          </div>
+          <div class="block accent">
+            <div class="index">02 · {{ LABEL }}</div>
+            <h3>{{ Block title. }}</h3>
+            <p class="lede">{{ One-line restatement. }}</p>
+            <ul>
+              <li>{{ Supporting point one }}</li>
+              <li>{{ Supporting point two }}</li>
+              <li>{{ Supporting point three }}</li>
+              <li>{{ Supporting point four }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="slide-foot">
+          <span class="wordmark">fueled</span>
+          <span>{{ DECK NAME · SECTION }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAYOUT C: split (rows + accent callout) + takeaway ============ -->
+    <section>
+      <div class="slide">
+        <div class="slide-head">
+          <svg class="bolt"><use href="#bolt"/></svg>
+          <span class="meta"><span class="num">03 / 03</span><span class="label">{{ SECTION NAME }}</span></span>
+        </div>
+
+        <h2 class="display smallest" style="margin-bottom: 28px;">{{ Two-part headline. }} <span class="accent">{{ Punchline. }}</span></h2>
+
+        <div class="split">
+          <div class="strengths">
+            <div class="row">
+              <div class="label">{{ Row label }}</div>
+              <p class="desc">{{ One-line description of this item. }}</p>
+            </div>
+            <div class="row">
+              <div class="label">{{ Row label }}</div>
+              <p class="desc">{{ One-line description of this item. }}</p>
+            </div>
+            <div class="row">
+              <div class="label">{{ Row label }}</div>
+              <p class="desc">{{ One-line description of this item. }}</p>
+            </div>
+          </div>
+
+          <aside class="leverage">
+            <div>
+              <div class="label">{{ CALLOUT }}</div>
+              <div class="glyph">&gt;_</div>
+              <h3>{{ Big idea }}</h3>
+              <div class="tag">{{ optional mono tag }}</div>
+            </div>
+            <p>{{ One paragraph supporting the callout, ~2 sentences. }}</p>
+          </aside>
+        </div>
+
+        <div class="takeaway">
+          <strong>The takeaway:</strong> {{ one sentence restating the through-line of the whole deck. }}
+        </div>
+
+        <div class="slide-foot">
+          <span class="wordmark">fueled</span>
+          <span>{{ DECK NAME · SECTION }}</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 800,
+    margin: 0,
+    center: false,
+    minScale: 0.2,
+    maxScale: 2.0
+  });
+</script>
+</body>
+</html>
