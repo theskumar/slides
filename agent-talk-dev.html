@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My journey into the coding agent world</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css"
+      id="theme"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ---------- Dev aesthetic tokens ---------- */
+      :root {
+        --perfect-black: #0b0c0e;
+        --panel: #131418;
+        --perfect-white: #eaeaea;
+        --nebula: #ffb454; /* amber accent */
+        --tech-grey: #6b7280;
+        --muted: rgba(234, 234, 234, 0.55);
+        --rule: rgba(234, 234, 234, 0.1);
+
+        --font-display: "Inter", system-ui, sans-serif;
+        --font-mono: "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+      }
+
+      html,
+      body,
+      .reveal-viewport {
+        background: var(--perfect-black);
+      }
+
+      .reveal {
+        font-family: var(--font-display);
+        font-weight: 500;
+        color: var(--perfect-white);
+        letter-spacing: -0.005em;
+      }
+      .reveal .slides {
+        text-align: left;
+      }
+      .reveal .slides section {
+        padding: 0 !important;
+      }
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        text-transform: none;
+        color: var(--perfect-white);
+        letter-spacing: -0.02em;
+        line-height: 1.02;
+      }
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        margin: 0;
+      }
+      .reveal .display {
+        margin-bottom: 28px;
+      }
+      .reveal p {
+        line-height: 1.5;
+        margin: 0;
+      }
+      .reveal strong {
+        font-weight: 700;
+        color: var(--perfect-white);
+      }
+      .reveal .controls {
+        color: rgba(234, 234, 234, 0.4);
+      }
+      .reveal .progress {
+        color: var(--nebula);
+      }
+
+      /* ---------- Fixed slide canvas ---------- */
+      .slide,
+      .cover {
+        position: relative;
+        width: 1280px;
+        height: 800px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+      .slide {
+        padding: 64px 80px;
+      }
+      .cover {
+        padding: 80px;
+        justify-content: center;
+      }
+
+      /* ---------- Head / foot ---------- */
+      .slide-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 44px;
+      }
+      .slide-head .bolt {
+        width: 14px;
+        height: 20px;
+        color: var(--nebula);
+        flex-shrink: 0;
+      }
+      .meta {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .meta .num {
+        display: none;
+      }
+      .meta .label {
+        color: var(--perfect-white);
+      }
+
+      .slide-foot {
+        position: absolute;
+        left: 80px;
+        right: 80px;
+        bottom: 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .slide-foot .wordmark {
+        color: var(--perfect-white);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: none;
+        font-family: var(--font-mono);
+        font-size: 13px;
+      }
+
+      /* ---------- Headlines ---------- */
+      .display {
+        font-size: 88px;
+        line-height: 0.98;
+        max-width: 18ch;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+      .display.smaller {
+        font-size: 72px;
+        max-width: 24ch;
+      }
+      .display.smallest {
+        font-size: 52px;
+        max-width: none;
+      }
+      .display .accent {
+        color: var(--nebula);
+      }
+
+      .subtitle {
+        font-size: 22px;
+        color: var(--muted);
+        max-width: 60ch;
+        margin: 0 0 48px 0;
+        line-height: 1.4;
+      }
+
+      .caption {
+        font-family: var(--font-mono);
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 48px 0;
+        letter-spacing: 0.02em;
+      }
+      .caption .accent {
+        color: var(--nebula);
+      }
+
+      /* ---------- 4-card evidence strip ---------- */
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        width: 100%;
+        margin-top: 24px;
+      }
+      .ev-card {
+        border: 1px solid var(--rule);
+        padding: 22px 20px;
+        background: var(--panel);
+        display: flex;
+        flex-direction: column;
+      }
+      .ev-card .num {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        color: var(--nebula);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .ev-card .figure {
+        font-family: var(--font-mono);
+        font-size: 28px;
+        color: var(--perfect-white);
+        font-weight: 500;
+        margin-bottom: 10px;
+        line-height: 1;
+      }
+      .ev-card .figure .unit {
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .ev-card p {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      /* ---------- 3 cards ---------- */
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        width: 100%;
+      }
+      .card {
+        border: 1px solid var(--rule);
+        padding: 28px 26px;
+        background: var(--panel);
+        display: flex;
+        flex-direction: column;
+      }
+      .card .tag {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        color: var(--nebula);
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .card h3 {
+        font-size: 26px;
+        margin-bottom: 14px;
+        font-weight: 600;
+      }
+      .card p {
+        font-size: 16px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .card ul {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0 0 0;
+      }
+      .card ul li {
+        font-size: 14px;
+        color: var(--muted);
+        padding: 6px 0 6px 18px;
+        position: relative;
+        line-height: 1.45;
+      }
+      .card ul li::before {
+        content: "-";
+        position: absolute;
+        left: 0;
+        color: var(--nebula);
+      }
+
+      /* ---------- 2 blocks ---------- */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+      }
+      .block {
+        padding: 32px 30px;
+        border: 1px solid var(--rule);
+        background: var(--panel);
+        display: flex;
+        flex-direction: column;
+      }
+      .block.accent {
+        background: var(--nebula);
+        border-color: var(--nebula);
+        color: var(--perfect-black);
+      }
+      .block.accent h3,
+      .block.accent strong {
+        color: var(--perfect-black);
+      }
+      .block .index {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        color: var(--nebula);
+        text-transform: uppercase;
+        margin-bottom: 22px;
+      }
+      .block.accent .index {
+        color: var(--perfect-black);
+        opacity: 0.7;
+      }
+      .block h3 {
+        font-size: 30px;
+        margin-bottom: 10px;
+        line-height: 1.05;
+        font-weight: 600;
+      }
+      .block .lede {
+        font-size: 15px;
+        color: var(--muted);
+        margin: 0 0 22px 0;
+        line-height: 1.45;
+      }
+      .block.accent .lede {
+        color: rgba(11, 12, 14, 0.75);
+      }
+      .block ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .block ul li {
+        font-size: 15px;
+        padding: 10px 0 10px 22px;
+        position: relative;
+        line-height: 1.45;
+        border-top: 1px solid var(--rule);
+      }
+      .block ul li:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+      .block ul li::before {
+        content: "-";
+        position: absolute;
+        left: 0;
+        color: var(--nebula);
+        font-weight: 600;
+      }
+      .block.accent ul li {
+        border-top-color: rgba(11, 12, 14, 0.2);
+        color: var(--perfect-black);
+      }
+      .block.accent ul li::before {
+        color: var(--perfect-black);
+      }
+
+      /* ---------- Split (rows + callout + takeaway) ---------- */
+      .split {
+        display: grid;
+        grid-template-columns: 1.45fr 1fr;
+        gap: 36px;
+        width: 100%;
+      }
+      .strengths {
+        display: flex;
+        flex-direction: column;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 20px;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--rule);
+        align-items: baseline;
+      }
+      .row:first-child {
+        padding-top: 0;
+      }
+      .row:last-child {
+        border-bottom: none;
+      }
+      .row .label {
+        font-size: 26px;
+        color: var(--perfect-white);
+        font-weight: 600;
+      }
+      .row .desc {
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .leverage,
+      .evidence {
+        padding: 28px 26px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 320px;
+      }
+      .leverage {
+        background: var(--nebula);
+        color: var(--perfect-black);
+      }
+      .leverage .label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(11, 12, 14, 0.75);
+      }
+      .leverage .glyph {
+        font-family: var(--font-mono);
+        font-size: 40px;
+        color: var(--perfect-black);
+        line-height: 1;
+        margin: 14px 0 10px;
+        font-weight: 700;
+      }
+      .leverage h3 {
+        font-size: 32px;
+        line-height: 1.05;
+        margin: 0 0 10px 0;
+        color: var(--perfect-black);
+        font-weight: 600;
+      }
+      .leverage .tag {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: rgba(11, 12, 14, 0.78);
+        letter-spacing: 0.02em;
+        margin-bottom: 18px;
+      }
+      .leverage p {
+        font-size: 14px;
+        color: rgba(11, 12, 14, 0.88);
+        line-height: 1.5;
+      }
+
+      .evidence {
+        background: var(--panel);
+        border: 1px solid var(--nebula);
+        color: var(--perfect-white);
+      }
+      .evidence .label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--nebula);
+      }
+      .evidence .glyph {
+        font-family: var(--font-mono);
+        font-size: 40px;
+        color: var(--nebula);
+        line-height: 1;
+        margin: 14px 0 10px;
+        font-weight: 700;
+      }
+      .evidence h3 {
+        font-size: 30px;
+        line-height: 1.05;
+        margin: 0 0 10px 0;
+        color: var(--perfect-white);
+        font-weight: 600;
+      }
+      .evidence .tag {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+        margin-bottom: 18px;
+      }
+      .evidence p {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .takeaway {
+        margin-top: 26px;
+        padding: 14px 22px;
+        border-left: 3px solid var(--nebula);
+        font-size: 17px;
+        color: var(--perfect-white);
+        max-width: 100%;
+        line-height: 1.45;
+        background: var(--panel);
+      }
+      .takeaway strong {
+        color: var(--nebula);
+        font-weight: 600;
+      }
+
+      /* ---------- 3 columns (wins / leverage / don't) ---------- */
+      .grid-3-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        width: 100%;
+      }
+      .col {
+        border: 1px solid var(--rule);
+        padding: 24px 22px;
+        background: var(--panel);
+        display: flex;
+        flex-direction: column;
+      }
+      .col.warn {
+        background: rgba(255, 180, 84, 0.06);
+        border-color: rgba(255, 180, 84, 0.3);
+      }
+      .col .head {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.25em;
+        color: var(--nebula);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .col h3 {
+        font-size: 22px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        line-height: 1.15;
+      }
+      .col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .col ul li {
+        font-size: 14px;
+        color: var(--perfect-white);
+        padding: 8px 0 8px 18px;
+        position: relative;
+        line-height: 1.45;
+        border-top: 1px solid var(--rule);
+      }
+      .col ul li:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+      .col ul li::before {
+        content: "-";
+        position: absolute;
+        left: 0;
+        color: var(--nebula);
+      }
+      .col ul li .why {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      /* ---------- Cover ---------- */
+      .cover .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.35em;
+        color: var(--nebula);
+        text-transform: uppercase;
+        margin-bottom: 36px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .cover .eyebrow .bolt {
+        width: 14px;
+        height: 20px;
+        color: var(--nebula);
+      }
+      .cover h1 {
+        font-size: 112px;
+        line-height: 0.96;
+        max-width: 14ch;
+        margin: 0 0 32px 0;
+        font-weight: 600;
+      }
+      .cover h1 .accent {
+        color: var(--nebula);
+      }
+      .cover .sub {
+        font-size: 24px;
+        color: var(--muted);
+        max-width: 50ch;
+        line-height: 1.4;
+      }
+      .cover .sub strong {
+        color: var(--perfect-white);
+        font-weight: 500;
+      }
+      .cover .deck-meta {
+        position: absolute;
+        bottom: 60px;
+        left: 80px;
+        right: 80px;
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .cover .deck-meta .wordmark {
+        color: var(--perfect-white);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: none;
+        font-family: var(--font-mono);
+        font-size: 14px;
+      }
+
+      /* prompt-like glyph for cover */
+      .prompt-line {
+        font-family: var(--font-mono);
+        color: var(--muted);
+        font-size: 16px;
+        margin-top: 28px;
+      }
+      .prompt-line .caret {
+        color: var(--nebula);
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="bolt" viewBox="0 0 20 28">
+          <path
+            d="M12 0 L0 16 L8 16 L6 28 L20 10 L11 10 Z"
+            fill="currentColor"
+          />
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="reveal">
+      <div class="slides">
+        <!-- ============ COVER ============ -->
+        <section>
+          <div class="cover">
+            <div class="eyebrow">
+              <!-- <svg class="bolt"><use href="#bolt"/></svg> -->
+              <!-- A talk for engineers -->
+            </div>
+            <h1>
+              My journey into the
+              <span class="accent">coding agent world.</span>
+            </h1>
+            <p class="sub">
+              Slow down. Own the workspace. <strong>Less is more</strong>, for
+              you and for the agent.
+            </p>
+            <!--<p class="prompt-line"><span class="caret">$</span> saurabh kumar / fueled</p>-->
+            <div class="deck-meta">
+              <span>
+                <span class="wordmark">saurabh kumar</span> &nbsp;/&nbsp;
+                engineering, fueled</span>
+              <span>15 min</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 01 — Start lean ============ -->
+        <section>
+          <div class="slide">
+            <div class="slide-head">
+              <svg class="bolt"><use href="#bolt" /></svg>
+              <span class="meta"
+                ><span class="num">01 / 05</span
+                ><span class="label">Start lean</span></span
+              >
+            </div>
+
+            <h2 class="display smallest" style="margin-bottom: 18px">
+              Start lean.
+              <span class="accent">Defaults bloat the brain.</span>
+            </h2>
+            <p class="caption">
+              <span class="accent">//</span> an agent is just a loop. each
+              tool you add inflates every turn.
+            </p>
+
+            <div class="split">
+              <div class="strengths">
+                <br>
+                <div class="row">
+                  <div class="label">Defaults are heavy</div>
+                  <p class="desc">
+                    Pre-loaded MCPs, skills, and system prompts cost context
+                    every turn. Most ship with assumptions that do not match
+                    your work.
+                  </p>
+                </div>
+                <div class="row">
+                  <div class="label">Lean goes far</div>
+                  <p class="desc">
+                    A small set covers most work. Learn from what others use,
+                    then build only what you need. Let the agent help refine
+                    its own setup.
+                  </p>
+                </div>
+                <div class="row">
+                  <div class="label">Bloat is sticky</div>
+                  <p class="desc">
+                    It is much harder to remove a tool you have come to trust
+                    than to never add it. Start at the floor.
+                  </p>
+                </div>
+              </div>
+
+              <aside class="evidence">
+                <div>
+                  <div class="label">sandbox · evidence</div>
+                  <div class="glyph">[ ]</div>
+                  <h3>Drop the security theater.</h3>
+                  <div class="tag">os-level network + file isolation</div>
+                </div>
+                <p>
+                  Once you understand the harness, OS-level sandboxing handles
+                  network and filesystem isolation. In-harness gates become
+                  rails that confuse more than they protect.
+                </p>
+              </aside>
+            </div>
+
+            <div class="takeaway">
+              <strong>Start with the floor.</strong> Use the agent itself to
+              grow the setup as real gaps appear.
+            </div>
+
+            <div class="slide-foot">
+              <span class="wordmark">saurabh kumar</span>
+              <span>agents · 2026</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 02 — Artist mindset ============ -->
+        <section>
+          <div class="slide">
+            <div class="slide-head">
+              <svg class="bolt"><use href="#bolt" /></svg>
+              <span class="meta"
+                ><span class="num">02 / 05</span
+                ><span class="label">Mindset</span></span
+              >
+            </div>
+
+            <h2 class="display smaller" style="margin-bottom: 36px">
+              You own the tools.
+              <span class="accent">Not the other way around.</span>
+            </h2>
+
+            <div class="grid-2">
+              <div class="block">
+                <div class="index">consumer pattern</div>
+                <h3>Adopt every new thing.</h3>
+                <p class="lede">Tools change weekly. You change with them.</p>
+                <ul>
+                  <li>Switch editors every quarter</li>
+                  <li>Stack MCPs because they exist</li>
+                  <li>
+                    Vendors generalize as they grow (Claude Code: hidden
+                    thinking, more tools, broken flow)
+                  </li>
+                  <li>Your setup expires the day the vendor pivots</li>
+                </ul>
+              </div>
+              <div class="block accent">
+                <div class="index">artist pattern</div>
+                <h3>Compose. Keep. Tweak.</h3>
+                <p class="lede">
+                  Pick what works. Make it bend. Grow at your pace.
+                </p>
+                <ul>
+                  <li>
+                    Zed + terminal + lazygit, version-controlled in dotfiles
+                  </li>
+                  <li>pi-agent: a lean harness you can tweak</li>
+                  <li>tmux for parallel agents across projects</li>
+                  <li>Tried Cursor, kept landing back here</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="slide-foot">
+              <span class="wordmark">saurabh kumar</span>
+              <span>agents · 2026</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 03 — Context is king ============ -->
+        <section>
+          <div class="slide">
+            <div class="slide-head">
+              <svg class="bolt"><use href="#bolt" /></svg>
+              <span class="meta"
+                ><span class="num">03 / 05</span
+                ><span class="label">Context</span></span
+              >
+            </div>
+
+            <h2 class="display smallest" style="margin-bottom: 28px">
+              Give the agent an index.
+              <span class="accent">Not a library.</span>
+            </h2>
+
+            <div class="split">
+              <div class="strengths">
+                <div class="row">
+                  <div class="label">Index up front</div>
+                  <p class="desc">
+                    A good initial structure is the best context you can give.
+                    Agents are excellent at progressive exploration when they
+                    know where to look.
+                  </p>
+                </div>
+                <div class="row">
+                  <div class="label">Decisions in code</div>
+                  <p class="desc">
+                    CLAUDE.md, ADRs, docstrings. Capture the why. The agent
+                    finds it on the next run, so you do not re-explain.
+                  </p>
+                </div>
+                <div class="row">
+                  <div class="label">Prune ruthlessly</div>
+                  <p class="desc">
+                    Mixed context is confused context. If a skill or MCP does
+                    not earn its slot, remove it. Defaults matter.
+                  </p>
+                </div>
+              </div>
+
+              <aside class="leverage">
+                <div>
+                  <div class="label">leverage</div>
+                  <div class="glyph">&gt;_</div>
+                  <h3>Structure once. Re-read forever.</h3>
+                  <div class="tag">CLAUDE.md / AGENTS.md</div>
+                </div>
+                <p>
+                  The agent does not need a tour every session. A small,
+                  deliberate index pays compound interest across runs.
+                </p>
+              </aside>
+            </div>
+
+            <div class="takeaway">
+              <strong>Context is king.</strong> But more context is not better
+              context.
+            </div>
+
+            <div class="slide-foot">
+              <span class="wordmark">saurabh kumar</span>
+              <span>agents · 2026</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 04 — Review > Generation ============ -->
+        <section>
+          <div class="slide">
+            <div class="slide-head">
+              <svg class="bolt"><use href="#bolt" /></svg>
+              <span class="meta"
+                ><span class="num">04 / 05</span
+                ><span class="label">Review</span></span
+              >
+            </div>
+
+            <h2 class="display smaller" style="margin-bottom: 36px">
+              The agent writes. <span class="accent">You ship.</span>
+            </h2>
+            <p class="subtitle">
+              Generation is cheap. Review is the bottleneck. Build the workflow
+              around review and feedback, not around generation speed. <br><br>
+            </p>
+
+
+
+            <div class="grid-3">
+              <div class="card">
+                <div class="tag">01 · self-review</div>
+                <h3>Read every diff before staging.</h3>
+                <p>
+                  Lazygit makes the pass quick. A diff you cannot review fast is
+                  a diff you cannot trust.
+                </p>
+              </div>
+              <div class="card">
+                <div class="tag">02 · manual test</div>
+                <h3>Run it. Always.</h3>
+                <p>
+                  Never skip the manual check, even on small changes. Tests
+                  catch regressions. Manual catches misunderstanding.
+                </p>
+              </div>
+              <div class="card">
+                <div class="tag">03 · PR summary</div>
+                <h3>Lead with why.</h3>
+                <p>
+                  The diff already shows what. Your PR description should
+                  explain the context and the trade-off, so the next reader (or
+                  agent) lands fast.
+                </p>
+              </div>
+            </div>
+
+            <div class="slide-foot">
+              <span class="wordmark">saurabh kumar</span>
+              <span>agents · 2026</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 05 — Wins, leverage, anti-patterns ============ -->
+        <section>
+          <div class="slide">
+            <div class="slide-head">
+              <svg class="bolt"><use href="#bolt" /></svg>
+              <span class="meta"
+                ><span class="num">05 / 05</span
+                ><span class="label">Wins &amp; traps</span></span
+              >
+            </div>
+
+            <h2 class="display smallest" style="margin-bottom: 24px">
+              What works. <span class="accent">What does not.</span>
+            </h2>
+
+            <div class="grid-3-col">
+              <div class="col">
+                <div class="head">where it wins</div>
+                <h3>Explore. Code. Chase a goal.</h3>
+                <ul>
+                  <li>
+                    Exploring an unknown repo
+                    <span class="why">Ask, do not read</span>
+                  </li>
+                  <li>
+                    Writing code from a clear spec
+                    <span class="why">Bounded, reviewable</span>
+                  </li>
+                  <li>
+                    Debugging to a desired outcome
+                    <span class="why">It iterates, you judge</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col">
+                <div class="head">leverage</div>
+                <h3>A loop + bash goes far.</h3>
+                <ul>
+                  <li>
+                    Agents are a loop, bash is the surface
+                    <span class="why">Most jobs need no extra tools</span>
+                  </li>
+                  <li>
+                    Have the agent write a 10-line script
+                    <span class="why">Better than doing it by hand</span>
+                  </li>
+                  <li>
+                    Prefer terminal over desktop chat
+                    <span class="why">Broader surface, full toolchain</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col warn">
+                <div class="head">do not</div>
+                <h3>Stop adding stuff.</h3>
+                <ul>
+                  <li>
+                    Chase every new tool
+                    <span class="why">Master the basics first</span>
+                  </li>
+                  <li>
+                    Bloat skills, MCPs, AGENTS.md
+                    <span class="why">They muddy the context</span>
+                  </li>
+                  <li>
+                    Default to the desktop chat
+                    <span class="why">Smaller surface, less leverage</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <strong>Slow down. Own the workspace.</strong> The setup is the
+              moat.
+            </div>
+
+            <div class="slide-foot">
+              <span class="wordmark">saurabh kumar</span>
+              <span>agents · 2026</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        transition: "fade",
+        transitionSpeed: "fast",
+        controls: true,
+        progress: true,
+        slideNumber: false,
+        width: 1280,
+        height: 800,
+        margin: 0,
+        center: false,
+        minScale: 0.2,
+        maxScale: 2.0,
+      });
+    </script>
+  </body>
+</html>
