@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slides — Saurabh Kumar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0b0c0e;
+        --panel: #131418;
+        --fg: #eaeaea;
+        --muted: rgba(234, 234, 234, 0.55);
+        --rule: rgba(234, 234, 234, 0.1);
+        --accent: #ffb454;
+        --font-display: "Inter", system-ui, sans-serif;
+        --font-mono: "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-display);
+        font-weight: 500;
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 80px 32px 64px;
+      }
+      .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+      h1 {
+        font-size: 56px;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+        margin: 0 0 16px;
+      }
+      h1 .accent { color: var(--accent); }
+      .sub {
+        font-size: 18px;
+        color: var(--muted);
+        max-width: 60ch;
+        line-height: 1.5;
+        margin: 0 0 56px;
+      }
+      .section-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.25em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      }
+      .decks {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .deck {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 22px 24px;
+        background: var(--panel);
+        border: 1px solid var(--rule);
+        text-decoration: none;
+        color: var(--fg);
+        transition: border-color 0.15s ease, transform 0.15s ease;
+      }
+      .deck:hover {
+        border-color: var(--accent);
+        transform: translateX(2px);
+      }
+      .deck .meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .deck .title {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .deck .tag {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .deck .arrow {
+        font-family: var(--font-mono);
+        color: var(--accent);
+        font-size: 18px;
+      }
+      footer {
+        margin-top: 64px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rule);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+        display: flex;
+        justify-content: space-between;
+      }
+      footer a { color: var(--accent); text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="eyebrow">slides · index</div>
+      <h1>Talks &amp; <span class="accent">decks</span>.</h1>
+      <p class="sub">
+        A small collection of reveal.js decks. Source lives on GitHub.
+      </p>
+
+      <div class="section-label">2026</div>
+      <div class="decks">
+        <a class="deck" href="./agents-talk-2026/">
+          <div class="meta">
+            <span class="title">My journey into the coding agent world</span>
+            <span class="tag">agents · 15 min · dev aesthetic</span>
+          </div>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a class="deck" href="./agents-talk-2026/agent-talk-fueled.html">
+          <div class="meta">
+            <span class="title">Agents talk &mdash; Fueled variant</span>
+            <span class="tag">agents · 15 min · on-brand</span>
+          </div>
+          <span class="arrow">&rarr;</span>
+        </a>
+      </div>
+
+      <footer>
+        <span>saurabh kumar / fueled</span>
+        <a href="https://github.com/theskumar/slides">github.com/theskumar/slides</a>
+      </footer>
+    </div>
+  </body>
+</html>
